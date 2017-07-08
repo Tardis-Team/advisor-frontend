@@ -1,0 +1,118 @@
+<app-notification></app-notification>
+<div class="modal fade"
+  bsModal
+  #modal="bs-modal">
+  <div class="modal-dialog modal-custom-size">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button"
+          *ngIf="state !== 1"
+          class="back"
+          aria-label="Back"
+          (click)="goToBack()">
+          <span class="back-icon" aria-hidden="true"></span>
+        </button>
+        <h4 class="modal-title">
+          <img class="modal-logo"
+            src="assets/55171-200.png"
+            alt="Logo">
+          <span class="modal-title-text">
+            <span>Tardis</span>
+            financial services
+          </span>
+        </h4>
+        <button type="button"
+          class="close"
+          aria-label="Close"
+          (click)="modal.hide()">
+          <span class="close-icon" aria-hidden="true"></span>
+        </button>
+      </div>
+      <div *ngIf="isLoading"
+        [@enterTrigger]="'fadeIn'"
+        class="modal-body-wrap">
+        <div class="spinner"></div>
+      </div>
+      <div *ngIf="!isLoading"
+        [@enterTrigger]="'fadeIn'"
+        class="modal-body-wrap">
+        <div [ngSwitch]="state">
+          <div *ngSwitchCase="1"
+            [@enterTrigger]="'fadeIn'">
+            <div class="modal-body"
+              *ngIf="!isLoading">
+              <div class="modal-body-part modal-body-top">
+                <div class="headline headline-lg text-center">You have received <span>{{ handledTransaction.amount | customCurrency:'EUR':true:'1.2-2' }}</span></div>
+                <div class="row justify-content-center text-block">
+                  <div class="col-4 text-right">
+                    You average spendings<br> for last 6 month
+                  </div>
+                  <div class="col-4 text-left">
+                    <span class="headline headline">- <span>{{ statistic.averageSpending | customCurrency:'EUR':true:'1.2-2' }}</span></span>
+                  </div>
+                </div>
+                <div class="row justify-content-center text-block">
+                  <div class="col-4 text-right">
+                    Payments due<br> this month:
+                  </div>
+                  <div class="col-4 text-left">
+                    <div *ngFor="let transaction of plannedTransactions | slice:0:3"
+                      class="list-wrap">
+                      <span class="list-wrap-left">{{ transaction.kind }}:</span>
+                      <span class="list-wrap-right">{{ transaction.amount | customCurrency:'EUR':true:'1.2-2' }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-body-part modal-body-bottom">
+                <br>
+                <div class="headline text-center">This month <span>{{ statistic.saveToSpendAmount | customCurrency:'EUR':true:'1.2-2' }}</span> is what you can SAFELY:</div>
+                <br>
+                <div class="row justify-content-center">
+                  <div class="col-5">
+                    <app-advertising [type]="'preview'"
+                      [data]="advOverviews.spend"
+                      (callback)="goToAdvises1($event)"></app-advertising>
+                  </div>
+                  <div class="col-5">
+                    <app-advertising [type]="'preview'"
+                      [data]="advOverviews.invest"
+                      (callback)="goToAdvises2($event)"></app-advertising>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngSwitchCase="2"
+            [@enterTrigger]="'fadeIn'">
+            <div class="modal-body"
+              *ngIf="!isLoading">
+              <div class="modal-body-part">
+                <br>
+                <br>
+                <div class="headline text-center">This month <span>{{ statistic.saveToSpendAmount | customCurrency:'EUR':true:'1.2-2' }}</span> is safe to spend</div>
+                <app-advertising *ngFor="let adv of advertisement.spend | slice:0:3"
+                  [type]="'full'"
+                  [data]="adv"
+                  (callback)="goToAdvises1($event)"></app-advertising>
+              </div>
+            </div>
+          </div>
+          <div *ngSwitchCase="3"
+            [@enterTrigger]="'fadeIn'">
+            <div class="modal-body"
+              *ngIf="!isLoading">
+              <div class="modal-body-part">
+                <div class="headline text-center">This month <span>{{ statistic.saveToSpendAmount | customCurrency:'EUR':true:'1.2-2' }}</span> is safe to invest</div>
+                <app-advertising *ngFor="let adv of advertisement.invest | slice:0:3"
+                  [type]="'full'"
+                  [data]="adv"
+                  (callback)="goToAdvises2($event)"></app-advertising>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

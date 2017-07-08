@@ -1,0 +1,27 @@
+<div [ngSwitch]="type">
+  <div *ngSwitchCase="'preview'"
+    class="adv">
+    <div class="adv-type">{{ data.type }}</div>
+    <div class="adv-title">{{ data.title }}</div>
+    <div class="adv-desc">{{ data.description }}</div>
+    <button type="button" class="btn"
+      [ngClass]="{'btn-primary': data.type === 'INVEST', 'btn-secondary': data.type === 'SPEND'}"
+      (click)="onBtnClick()">{{ data.btn }}</button>
+  </div>
+  <div *ngSwitchCase="'full'"
+    class="adv adv-full">
+    <div class="row align-items-center">
+      <div class="col-3 adv-image-wrap">
+        <img class="adv-image"
+          [src]="data.imageLink"
+          alt="{{ data.category }}">
+      </div>
+      <div class="col-9">
+        <div class="adv-type adv-type-small"
+          *ngIf="data.type === 'SPEND'">{{ data.category }}</div>
+        <div class="adv-title">{{ data.title }}</div>
+        <div class="adv-desc">{{ data.description }}</div>
+      </div>
+    </div>
+  </div>
+</div>

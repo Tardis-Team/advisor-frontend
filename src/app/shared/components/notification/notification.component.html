@@ -1,0 +1,9 @@
+<div *ngIf="notification"
+  class="alert alert-info alert-dismissable"
+  (click)="onClick(notification)">
+  {{ notification.message }}
+  <br>
+  <a (click)="onClick(notification)">{{ notification.linkText }}</a>
+  <a class="close"
+    (click)="remove(notification)">&times;</a>
+</div>
